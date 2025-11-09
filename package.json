@@ -1,0 +1,41 @@
+{
+  "name": "mcp-code-exec-harness",
+  "version": "1.0.0",
+  "description": "Production-ready AI agent harness using Code Execution with MCP pattern",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc-watch --onSuccess \"node dist/index.js\"",
+    "clean": "rm -rf dist",
+    "prepare-workspace": "mkdir -p workspace skills",
+    "build-sandbox": "docker build -t sandbox-image-name -f Dockerfile.sandbox ."
+  },
+  "keywords": [
+    "mcp",
+    "ai-agent",
+    "code-execution",
+    "typescript",
+    "dynamic-execution",
+    "docker",
+    "sandbox"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "dockerode": "^3.3.1",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.1",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/dockerode": "^3.3.9",
+    "@types/node": "^22.5.0",
+    "tsc-watch": "^6.0.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

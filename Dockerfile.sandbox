@@ -1,0 +1,22 @@
+# Use a minimal, hardened base image
+FROM node:20-alpine
+
+# Create a non-root user 'sandboxuser' for code execution
+RUN addgroup -S sandboxgroup && adduser -S sandboxuser -G sandboxgroup
+
+# Create necessary directories for the sandbox
+RUN mkdir -p /home/sandboxuser/skills /home/sandboxuser/workspace && \
+    chown -R sandboxuser:sandboxgroup /home/sandboxuser
+
+# Switch to non-root user
+USER sandboxuser
+
+# Set the working directory to the user's home
+WORKDIR /home/sandboxuser
+
+# Copy only the compiled runtime helper
+# Note: We will dynamically copy the agent's code in, not build it here.
+COPY --chown=sandboxuser:sandboxgroup dist/agent_runtime/runtime_api.js ./runtime_api.js
+
+# Set default command
+CMD ["node"]
