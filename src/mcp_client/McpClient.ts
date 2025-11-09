@@ -6,6 +6,7 @@
  */
 
 import { PiiCensor } from './PiiCensor';
+import { N8nMcpClient } from './N8nMcpClient';
 
 /**
  * Tool definition interface
@@ -34,9 +35,11 @@ export class McpClient {
   private piiCensor: PiiCensor;
   private servers: Map<string, any> = new Map();
   private tools: Map<string, ToolDefinition> = new Map();
+  private n8nClient: N8nMcpClient;
 
   constructor(piiCensor: PiiCensor) {
     this.piiCensor = piiCensor;
+    this.n8nClient = new N8nMcpClient();
     this.initializeServers();
   }
 
@@ -78,6 +81,29 @@ export class McpClient {
       description: 'Get detailed information about a specific tool',
       schema: { input: { name: 'string' }, output: 'ToolDefinition' }
     });
+
+    // Register n8n tools
+    this.registerN8nTools();
+  }
+
+  /**
+   * Register n8n MCP tools
+   */
+  private registerN8nTools(): void {
+    const n8nTools = this.n8nClient.listTools();
+    
+    for (const toolName of n8nTools) {
+      const toolDef = this.n8nClient.getToolDefinition(toolName);
+      if (toolDef) {
+        this.registerTool({
+          name: toolName,
+          description: toolDef.description,
+          schema: toolDef.parameters
+        });
+      }
+    }
+    
+    console.log(`[McpClient] Registered ${n8nTools.length} n8n tools`);
   }
 
   /**
@@ -125,7 +151,12 @@ export class McpClient {
       throw new Error(`Tool not found: ${toolName}. Use list_mcp_tools() to see available tools.`);
     }
     
-    // TODO: Route to appropriate MCP server and execute
+    // Route n8n tools to n8n client
+    if (toolName.startsWith('n8n_')) {
+      return await this.n8nClient.executeTool(toolName, input);
+    }
+    
+    // TODO: Route other tools to appropriate MCP server and execute
     // Example:
     // const server = this.getServerForTool(toolName);
     // const result = await server.callTool(toolName, input);
