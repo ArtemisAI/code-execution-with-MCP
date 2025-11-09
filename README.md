@@ -290,14 +290,14 @@ async addServer(config: MCPServerConfig): Promise<void> {
   }, {
     capabilities: { tools: {} }
   });
-  
+
   const transport = new StdioClientTransport({
     command: config.command,
     args: config.args
   });
-  
+
   await client.connect(transport);
-  
+
   // Discover and register tools
   const tools = await client.listTools();
   tools.forEach(tool => this.registerTool(tool));
@@ -359,15 +359,76 @@ curl http://localhost:3000/health
 4. **[Model Context Protocol Documentation](https://modelcontextprotocol.io)** - MCP specification and guides
 5. **[Docker Security Best Practices](https://docs.docker.com/engine/security/)** - Container security hardening
 
-## 🤝 Contributing
+## 🤝 Contributing & Community Collaboration
 
-This is a template repository. Customize it for your specific needs:
+This is a template repository that represents a **new paradigm** in AI agent development - one where code execution, security, and persistent capabilities work together seamlessly. We believe this approach has the potential to transform how AI agents are built and deployed at scale.
 
-1. Implement your LLM integration
-2. Connect your MCP servers
-3. Customize security policies
-4. Extend PII detection
-5. Add monitoring and logging
+### We're Inviting You to Build This Together
+
+The open-source community is fundamental to advancing this paradigm. We welcome contributions in all forms:
+
+#### **Areas We're Looking For Help**
+
+1. **LLM Integrations** - Add support for more providers (Claude, GPT-4, Gemini, Llama, etc.)
+2. **MCP Server Connectors** - Build adapters for popular services (databases, APIs, file systems)
+3. **Security Hardening** - Audit the sandbox, propose additional security measures
+4. **Performance Optimizations** - Container pooling, caching strategies, resource tuning
+5. **Monitoring & Observability** - Prometheus metrics, logging, distributed tracing
+6. **Skills Library** - Create reusable, domain-specific skills for the community
+7. **Documentation** - Tutorials, deployment guides, best practices
+8. **Testing & Examples** - Integration tests, real-world use cases, benchmarks
+9. **Alternative Sandboxes** - WebAssembly, cloud functions, process isolation implementations
+10. **Frontend UI** - Dashboard, skill explorer, task monitoring interface
+
+#### **How to Contribute**
+
+1. **Fork & Customize** - Start with this template for your specific use case
+2. **Share Improvements** - Submit PRs with general-purpose enhancements
+3. **Build Skills** - Create reusable skills and submit to the community skills library
+4. **Report Issues** - Help us identify bugs and security concerns
+5. **Discuss Ideas** - Join conversations about the architecture and design
+6. **Write Documentation** - Help others understand and adopt the pattern
+
+#### **The Vision**
+
+We're building toward a future where:
+- 🧠 **AI agents scale** beyond token limitations through code execution
+- 🔄 **Skills accumulate** over time, making agents continuously smarter
+- 🔒 **Privacy is built-in** with automatic PII protection
+- 🛡️ **Security is layered** with multiple defense mechanisms
+- 🌐 **Tools are discovered dynamically**, not statically configured
+- 📚 **Community-driven** with shared skills and best practices
+
+### Customization Guide for Your Organization
+
+Customize this template for your specific needs:
+
+1. **Implement your LLM integration** - Choose your preferred provider
+2. **Connect your MCP servers** - Wire up your tools and data sources
+3. **Customize security policies** - Adjust for your threat model
+4. **Extend PII detection** - Add patterns for your domain
+5. **Add monitoring and logging** - Integrate with your observability stack
+6. **Build domain-specific skills** - Create your organization's capability library
+7. **Share back** - Contribute generic improvements to help the community
+
+### Community Resources
+
+- **Issues & Discussions** - Ask questions, propose features, discuss architecture
+- **Skills Repository** - Contribute reusable skills to `skills/examples/`
+- **Documentation** - Help improve guides and examples
+- **Partnerships** - Collaborate on larger initiatives
+
+### Recognition
+
+Contributors will be recognized in:
+- Project README
+- Release notes
+- Community Hall of Fame
+- Speaking opportunities at community events
+
+---
+
+**Together, we can build the next generation of AI agent infrastructure.** Whether you're an AI researcher, DevOps engineer, security expert, or full-stack developer, there's a place for your contributions. Join us in advancing this paradigm!
 
 ## 📝 License
 
