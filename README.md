@@ -2,6 +2,8 @@
 
 A production-ready template for building AI agents using the **Code Execution with MCP** pattern. This harness enables AI agents to dynamically discover and execute MCP tools through secure, sandboxed code execution.
 
+> **Inspired by**: This template implements the architectural patterns and design philosophy from Anthropic's [Code Execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp) engineering blog post and their [Skills Repository](https://github.com/anthropics/skills). We are grateful to Anthropic for openly sharing these patterns.
+
 ## 🌟 Key Features
 
 - **Dynamic Tool Discovery** - Tools discovered at runtime using `list_mcp_tools()` and `get_mcp_tool_details()` (no static files)
@@ -11,6 +13,20 @@ A production-ready template for building AI agents using the **Code Execution wi
 - **Ephemeral Workspace** - `/workspace` directory for temporary task files
 - **Multi-Turn Conversations** - Support for complex agent workflows
 - **Extensible Architecture** - Easy to customize and extend
+
+## 💡 Why Code Execution?
+
+**The Token Efficiency Problem**: Traditional AI agents must describe every computational step in natural language, consuming valuable context window space. Processing 1,000 records might use 50,000 tokens just to describe the transformations.
+
+**The Solution**: Code execution lets agents write and run code, delegating computation to traditional software while focusing their intelligence on high-level reasoning. The same 1,000-record task uses just ~500 tokens of code.
+
+**Key Benefits**:
+- 📊 **Scalability**: Handle tasks of any complexity within token limits
+- 🔄 **Reusability**: Save code to `/skills` for future use
+- 🔒 **Privacy**: PII tokenized before reaching the LLM
+- 🎯 **Reliability**: Deterministic code execution vs. natural language descriptions
+
+> 📖 Read the full philosophy in [`docs/PHILOSOPHY.md`](docs/PHILOSOPHY.md) - explains the "why" behind this architecture based on Anthropic's research.
 
 ## 🏗️ Architecture
 
@@ -318,11 +334,30 @@ curl -X POST http://localhost:3000/task \
 curl http://localhost:3000/health
 ```
 
-## 📖 References
+## 📖 Documentation & References
 
-1. [Code Execution with MCP - Anthropic Engineering Blog](https://www.anthropic.com/engineering/code-execution-with-mcp)
-2. [Model Context Protocol Documentation](https://modelcontextprotocol.io)
-3. [Docker Security Best Practices](https://docs.docker.com/engine/security/)
+### Core Documentation
+
+- **[PHILOSOPHY.md](docs/PHILOSOPHY.md)** - ⭐ **Start here!** Explains the "why" behind code execution, token efficiency, and design principles based on Anthropic's research
+- **[QUICK_START.md](docs/QUICK_START.md)** - Get running in 5 minutes
+- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Technical deep dive into system components
+- **[SECURITY.md](docs/SECURITY.md)** - Security best practices and hardening checklist
+- **[DEPLOYMENT.md](docs/DEPLOYMENT.md)** - Production deployment guides (Docker, K8s, Cloud)
+- **[API_EXAMPLES.md](docs/API_EXAMPLES.md)** - Usage examples and patterns
+
+### Skills & Examples
+
+- **[skills/examples/](skills/examples/)** - Example skills following the Anthropic skills pattern
+  - `template-skill/` - Template for creating new skills
+  - `data-processor/` - Token-efficient data transformation example
+
+### External References
+
+1. **[Code Execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp)** - Anthropic's engineering blog post describing the dynamic execution model and philosophy
+2. **[Anthropic Skills Repository](https://github.com/anthropics/skills)** - Open-source examples of skills that extend agent capabilities
+3. **[Equipping Agents for the Real World with Agent Skills](https://anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)** - Philosophy behind persistent agent capabilities
+4. **[Model Context Protocol Documentation](https://modelcontextprotocol.io)** - MCP specification and guides
+5. **[Docker Security Best Practices](https://docs.docker.com/engine/security/)** - Container security hardening
 
 ## 🤝 Contributing
 
