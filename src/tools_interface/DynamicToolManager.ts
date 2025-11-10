@@ -73,6 +73,52 @@ export class DynamicToolManager {
           },
           required: ['toolName', 'input']
         }
+      },
+      {
+        name: 'introspect_servers',
+        description: 'Discover available MCP server directories in the filesystem. Returns an array of server names that can be explored for tools.',
+        parameters: {
+          type: 'object',
+          properties: {},
+          required: []
+        }
+      },
+      {
+        name: 'get_virtual_library',
+        description: 'Get the complete virtual library structure showing all available servers and their tools. This provides a comprehensive view of the filesystem-based tool discovery system.',
+        parameters: {
+          type: 'object',
+          properties: {},
+          required: []
+        }
+      },
+      {
+        name: 'get_server_index',
+        description: 'Get the index file content for a specific server directory. This shows what capabilities are available in that server.',
+        parameters: {
+          type: 'object',
+          properties: {
+            serverName: {
+              type: 'string',
+              description: 'The name of the server to get index for'
+            }
+          },
+          required: ['serverName']
+        }
+      },
+      {
+        name: 'list_server_functions',
+        description: 'List all available functions in a specific server module.',
+        parameters: {
+          type: 'object',
+          properties: {
+            serverName: {
+              type: 'string',
+              description: 'The name of the server to list functions for'
+            }
+          },
+          required: ['serverName']
+        }
       }
     ];
   }
@@ -132,7 +178,27 @@ The agent has access to the following dynamic tool discovery functions:
    - Returns: Tool execution result
    - This function is globally available in the execution sandbox
 
-These tools enable dynamic discovery and execution of MCP tools without static configuration.
+4. **introspect_servers()** - Discover available MCP server directories
+   - No parameters required
+   - Returns: Array of server names (strings)
+   - Use this for filesystem-based tool discovery
+
+5. **get_virtual_library()** - Get complete tool library structure
+   - No parameters required
+   - Returns: Object with all servers and their tools
+   - Provides comprehensive view of available capabilities
+
+6. **get_server_index(serverName)** - Get server index file content
+   - Parameters: serverName (string)
+   - Returns: Server module exports and documentation
+   - Use this to explore a specific server's capabilities
+
+7. **list_server_functions(serverName)** - List functions in a server
+   - Parameters: serverName (string)
+   - Returns: Array of function names (strings)
+   - Use this to see what functions a server provides
+
+These tools enable both dynamic MCP tool discovery and filesystem-based exploration of available capabilities.
     `.trim();
   }
 }

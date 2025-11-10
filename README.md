@@ -417,6 +417,7 @@ curl http://localhost:3000/health
 ### Core Documentation
 
 - **[PHILOSOPHY.md](docs/PHILOSOPHY.md)** - ⭐ **Start here!** Explains the "why" behind code execution, token efficiency, and design principles based on Anthropic's research
+- **[IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md)** - 🔧 **Complete implementation guide** for the Code Execution with MCP architecture including all components and usage examples
 - **[QUICK_START.md](docs/QUICK_START.md)** - Get running in 5 minutes
 - **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Technical deep dive into system components
 - **[SECURITY.md](docs/SECURITY.md)** - Security best practices and hardening checklist

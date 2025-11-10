@@ -7,6 +7,8 @@
 
 import { PiiCensor } from './PiiCensor';
 import { N8nMcpClient } from './N8nMcpClient';
+import { ToolCallRouter } from '../tools_interface/ToolCallRouter';
+import { FilesystemGenerator } from '../tools_interface/FilesystemGenerator';
 
 /**
  * Tool definition interface
@@ -36,10 +38,14 @@ export class McpClient {
   private servers: Map<string, any> = new Map();
   private tools: Map<string, ToolDefinition> = new Map();
   private n8nClient: N8nMcpClient;
+  private router: ToolCallRouter;
+  private filesystemGenerator: FilesystemGenerator;
 
   constructor(piiCensor: PiiCensor) {
     this.piiCensor = piiCensor;
     this.n8nClient = new N8nMcpClient();
+    this.filesystemGenerator = new FilesystemGenerator();
+    this.router = new ToolCallRouter(this, this.filesystemGenerator);
     this.initializeServers();
   }
 
@@ -115,6 +121,7 @@ export class McpClient {
 
   /**
    * Call an MCP tool with PII protection
+   * Routes through the ToolCallRouter for intelligent strategy selection
    */
   async callTool(toolName: string, input: any, userId: string = 'default'): Promise<any> {
     console.log(`[McpClient] Calling tool: ${toolName}`);
@@ -122,20 +129,19 @@ export class McpClient {
     // De-tokenize any PII from agent code before sending to real tools
     const detokenizedInput = this.piiCensor.detokenize(userId, input);
     
-    let result: any;
+    // Route the tool call through the router
+    const routingResult = await this.router.routeToolCall({
+      toolName,
+      input: detokenizedInput,
+      userId
+    });
     
-    // Handle internal tools
-    if (toolName === '__internal_list_tools') {
-      result = await this.listTools();
-    } else if (toolName === '__internal_get_tool_details') {
-      result = await this.getToolDetails(detokenizedInput.name);
-    } else {
-      // Execute actual MCP tool
-      result = await this.executeToolOnServer(toolName, detokenizedInput);
+    if (!routingResult.success) {
+      throw new Error(routingResult.error || 'Tool call failed');
     }
     
     // Tokenize any PII in the response before sending to agent
-    const tokenizedResult = this.piiCensor.tokenize(userId, result);
+    const tokenizedResult = this.piiCensor.tokenize(userId, routingResult.result);
     
     return tokenizedResult;
   }
@@ -144,7 +150,7 @@ export class McpClient {
    * Execute a tool on the appropriate MCP server
    * TODO: Implement actual MCP tool execution
    */
-  private async executeToolOnServer(toolName: string, input: any): Promise<any> {
+  async executeToolOnServer(toolName: string, input: any): Promise<any> {
     const tool = this.tools.get(toolName);
     
     if (!tool) {
@@ -170,6 +176,20 @@ export class McpClient {
       message: `Tool ${toolName} executed (mock implementation - replace with actual MCP call)`,
       input: input
     };
+  }
+
+  /**
+   * Get the tool call router for advanced use cases
+   */
+  getRouter(): ToolCallRouter {
+    return this.router;
+  }
+
+  /**
+   * Get the filesystem generator for tool introspection
+   */
+  getFilesystemGenerator(): FilesystemGenerator {
+    return this.filesystemGenerator;
   }
 
   /**

@@ -146,6 +146,23 @@ export function getRuntimeApi(): string {
        */
       timestamp: function() {
         return new Date().toISOString();
+      },
+      
+      /**
+       * Safely require a module from the servers directory
+       * This enables filesystem-based tool discovery
+       */
+      requireServer: function(modulePath) {
+        try {
+          // Only allow requiring from servers directory
+          if (!modulePath.startsWith('./servers/') && !modulePath.startsWith('../servers/')) {
+            throw new Error('Can only require modules from servers directory');
+          }
+          return require(modulePath);
+        } catch (e) {
+          console.error('[utils.requireServer] Failed to require module:', e.message);
+          return null;
+        }
       }
     };
     
