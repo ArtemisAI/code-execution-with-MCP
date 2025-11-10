@@ -71,7 +71,19 @@ export class FilesystemGenerator {
   async getServerIndex(serverName: string): Promise<any> {
     this.refreshCacheIfNeeded();
     
+    // Security: Validate serverName to prevent path traversal
+    if (!this.isValidServerName(serverName)) {
+      throw new Error(`Invalid server name: ${serverName}. Server names must be alphanumeric with hyphens only.`);
+    }
+    
     const indexPath = path.join(this.serversPath, serverName, 'index.ts');
+    
+    // Security: Verify the resolved path is within serversPath
+    const resolvedPath = path.resolve(indexPath);
+    const resolvedServersPath = path.resolve(this.serversPath);
+    if (!resolvedPath.startsWith(resolvedServersPath)) {
+      throw new Error(`Access denied: Path traversal attempt detected for ${serverName}`);
+    }
     
     if (!fs.existsSync(indexPath)) {
       throw new Error(`Server index not found: ${serverName}`);
@@ -87,7 +99,8 @@ export class FilesystemGenerator {
       const module = require(modulePath);
       return module;
     } catch (error) {
-      console.error(`[FilesystemGenerator] Error loading server ${serverName}:`, error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error('[FilesystemGenerator] Error loading server:', errorMessage);
       
       // Fallback: return file contents as string
       const content = fs.readFileSync(indexPath, 'utf-8');
@@ -102,6 +115,11 @@ export class FilesystemGenerator {
    * List available functions in a server module
    */
   async listServerFunctions(serverName: string): Promise<string[]> {
+    // Security: Validate serverName
+    if (!this.isValidServerName(serverName)) {
+      throw new Error(`Invalid server name: ${serverName}`);
+    }
+    
     const module = await this.getServerIndex(serverName);
     
     if (module.error) {
@@ -124,6 +142,14 @@ export class FilesystemGenerator {
    * Get detailed information about a specific tool/function
    */
   async getToolDetails(serverName: string, functionName: string): Promise<ServerFunction | null> {
+    // Security: Validate inputs
+    if (!this.isValidServerName(serverName)) {
+      throw new Error(`Invalid server name: ${serverName}`);
+    }
+    if (!this.isValidFunctionName(functionName)) {
+      throw new Error(`Invalid function name: ${functionName}`);
+    }
+    
     const module = await this.getServerIndex(serverName);
     
     if (!module[functionName]) {
@@ -225,5 +251,28 @@ export class FilesystemGenerator {
       cacheTTL: this.cacheTTL,
       serversPath: this.serversPath
     };
+  }
+
+  /**
+   * Validate server name to prevent path traversal
+   * Server names must be alphanumeric with hyphens only
+   */
+  private isValidServerName(serverName: string): boolean {
+    // Only allow alphanumeric characters, hyphens, and underscores
+    // No path separators, dots, or other special characters
+    const validPattern = /^[a-zA-Z0-9_-]+$/;
+    return validPattern.test(serverName) && 
+           !serverName.includes('..') && 
+           !serverName.includes('/') && 
+           !serverName.includes('\\');
+  }
+
+  /**
+   * Validate function name to prevent code injection
+   */
+  private isValidFunctionName(functionName: string): boolean {
+    // Only allow valid JavaScript identifier characters
+    const validPattern = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
+    return validPattern.test(functionName);
   }
 }
