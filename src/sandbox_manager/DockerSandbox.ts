@@ -190,6 +190,23 @@ export class DockerSandbox extends SandboxManager {
       global.get_mcp_tool_details = async (name) => {
         return callMCPTool("__internal_get_tool_details", { name });
       };
+      
+      // Inject filesystem-based discovery functions
+      global.introspect_servers = async () => {
+        return callMCPTool("introspect_servers", {});
+      };
+      
+      global.get_virtual_library = async () => {
+        return callMCPTool("get_virtual_library", {});
+      };
+      
+      global.get_server_index = async (serverName) => {
+        return callMCPTool("get_server_index", { serverName });
+      };
+      
+      global.list_server_functions = async (serverName) => {
+        return callMCPTool("list_server_functions", { serverName });
+      };
 
       // Execute user code
       (async () => {
