@@ -1,0 +1,225 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-11-11",
+  "description": "Catalog of available MCP servers for progressive discovery",
+  "categories": {
+    "official": {
+      "description": "Official MCP servers maintained by the Model Context Protocol team",
+      "status": "active",
+      "source": "https://github.com/modelcontextprotocol/servers",
+      "servers": [
+        {
+          "name": "filesystem",
+          "path": "official/filesystem",
+          "language": "typescript",
+          "status": "active",
+          "description": "File system operations including read/write, directory management, and file search",
+          "capabilities": ["file_operations", "directory_management", "search", "metadata"],
+          "use_cases": ["file_management", "workspace_operations", "content_storage"]
+        },
+        {
+          "name": "git",
+          "path": "official/git",
+          "language": "typescript",
+          "status": "active",
+          "description": "Git repository interaction and automation",
+          "capabilities": ["version_control", "diff_viewing", "commit_operations", "repository_search"],
+          "use_cases": ["code_management", "version_tracking", "repository_automation"]
+        },
+        {
+          "name": "memory",
+          "path": "official/memory",
+          "language": "typescript",
+          "status": "active",
+          "description": "Knowledge graph-based persistent memory system",
+          "capabilities": ["entity_management", "relationship_tracking", "knowledge_graphs", "persistent_storage"],
+          "use_cases": ["context_retention", "user_preferences", "knowledge_accumulation"]
+        },
+        {
+          "name": "fetch",
+          "path": "official/fetch",
+          "language": "typescript",
+          "status": "active",
+          "description": "HTTP request handling and web content fetching",
+          "capabilities": ["http_requests", "api_calls", "web_scraping", "content_retrieval"],
+          "use_cases": ["api_integration", "web_data_fetching", "external_service_calls"]
+        },
+        {
+          "name": "everything",
+          "path": "official/everything",
+          "language": "typescript",
+          "status": "active",
+          "description": "Comprehensive example demonstrating all MCP protocol capabilities",
+          "capabilities": ["reference_implementation", "testing", "protocol_demonstration"],
+          "use_cases": ["development", "testing", "learning"]
+        },
+        {
+          "name": "time",
+          "path": "official/time",
+          "language": "typescript",
+          "status": "active",
+          "description": "Time and date operations",
+          "capabilities": ["time_queries", "timezone_conversion", "date_calculations", "formatting"],
+          "use_cases": ["scheduling", "time_tracking", "date_manipulation"]
+        },
+        {
+          "name": "sequential-thinking",
+          "path": "official/sequential-thinking",
+          "language": "typescript",
+          "status": "active",
+          "description": "Extended thinking and reasoning capabilities",
+          "capabilities": ["multi_step_reasoning", "thought_tracking", "problem_decomposition"],
+          "use_cases": ["complex_reasoning", "step_by_step_analysis", "extended_thinking"]
+        }
+      ]
+    },
+    "archived": {
+      "description": "Previously maintained servers that are now archived but still useful for reference",
+      "status": "archived",
+      "source": "https://github.com/modelcontextprotocol/servers-archived",
+      "warning": "These servers are archived and may not receive regular updates",
+      "servers": [
+        {
+          "name": "postgresql",
+          "path": "archived/postgresql",
+          "language": "typescript",
+          "status": "archived",
+          "description": "PostgreSQL database interaction",
+          "capabilities": ["sql_queries", "table_management", "data_operations"],
+          "use_cases": ["relational_database", "sql_operations", "data_storage"],
+          "alternative": "community/postgresql-community"
+        },
+        {
+          "name": "redis",
+          "path": "archived/redis",
+          "language": "typescript",
+          "status": "archived",
+          "description": "Redis key-value store operations",
+          "capabilities": ["key_value_operations", "caching", "data_structures"],
+          "use_cases": ["caching", "session_storage", "real_time_data"]
+        },
+        {
+          "name": "sqlite",
+          "path": "archived/sqlite",
+          "language": "typescript",
+          "status": "archived",
+          "description": "SQLite database operations",
+          "capabilities": ["lightweight_sql", "embedded_database", "data_operations"],
+          "use_cases": ["local_storage", "embedded_db", "simple_sql"]
+        },
+        {
+          "name": "puppeteer",
+          "path": "archived/puppeteer",
+          "language": "typescript",
+          "status": "archived",
+          "description": "Browser automation and web scraping",
+          "capabilities": ["browser_automation", "web_scraping", "screenshot_capture", "form_interaction"],
+          "use_cases": ["web_scraping", "testing", "automation"]
+        },
+        {
+          "name": "sentry",
+          "path": "archived/sentry",
+          "language": "typescript",
+          "status": "archived",
+          "description": "Error tracking and monitoring integration",
+          "capabilities": ["error_tracking", "issue_management", "monitoring"],
+          "use_cases": ["error_monitoring", "debugging", "application_health"]
+        }
+      ]
+    },
+    "community": {
+      "description": "Community-contributed MCP servers for specialized use cases",
+      "status": "mixed",
+      "note": "Maintenance status varies by server",
+      "servers": [
+        {
+          "name": "mongodb",
+          "path": "community/mongodb",
+          "language": "typescript",
+          "status": "active",
+          "maintainer": "MongoDB, Inc.",
+          "source": "https://github.com/mongodb-js/mongodb-mcp-server",
+          "description": "MongoDB and MongoDB Atlas integration",
+          "capabilities": ["nosql_database", "document_storage", "aggregation", "atlas_api"],
+          "use_cases": ["document_database", "nosql_operations", "atlas_management"]
+        },
+        {
+          "name": "greptimedb",
+          "path": "community/greptimedb",
+          "language": "python",
+          "status": "experimental",
+          "maintainer": "Greptime Team",
+          "source": "https://github.com/GreptimeTeam/greptimedb-mcp-server",
+          "description": "GreptimeDB time-series database integration",
+          "capabilities": ["time_series", "sql_queries", "table_exploration"],
+          "use_cases": ["time_series_data", "metrics", "monitoring_data"]
+        },
+        {
+          "name": "unstructured",
+          "path": "community/unstructured",
+          "language": "python",
+          "status": "active",
+          "maintainer": "Unstructured.io",
+          "source": "https://github.com/Unstructured-IO/UNS-MCP",
+          "description": "Document processing and unstructured data extraction",
+          "capabilities": ["document_parsing", "text_extraction", "format_conversion"],
+          "use_cases": ["document_analysis", "data_extraction", "content_processing"]
+        },
+        {
+          "name": "semgrep",
+          "path": "community/semgrep",
+          "language": "python",
+          "status": "deprecated",
+          "maintainer": "Semgrep Inc.",
+          "source": "https://github.com/semgrep/mcp",
+          "description": "Code security scanning and vulnerability detection",
+          "capabilities": ["security_scanning", "pattern_matching", "vulnerability_detection"],
+          "use_cases": ["code_security", "static_analysis", "vulnerability_scanning"],
+          "note": "Moved to main Semgrep repository - use official Semgrep binary"
+        },
+        {
+          "name": "mcp-installer",
+          "path": "community/mcp-installer",
+          "language": "typescript",
+          "status": "active",
+          "maintainer": "Anais Betts",
+          "source": "https://github.com/anaisbetts/mcp-installer",
+          "description": "Tool for installing and managing MCP servers",
+          "capabilities": ["server_installation", "configuration_management", "version_management"],
+          "use_cases": ["server_deployment", "server_management", "automation"]
+        },
+        {
+          "name": "postgresql-community",
+          "path": "community/postgresql-community",
+          "language": "typescript",
+          "status": "active",
+          "maintainer": "Marco Palladino",
+          "source": "https://github.com/subnetmarco/pgmcp",
+          "description": "Community-maintained PostgreSQL MCP server",
+          "capabilities": ["sql_queries", "schema_exploration", "data_operations"],
+          "use_cases": ["relational_database", "postgresql_operations", "sql_execution"]
+        }
+      ]
+    }
+  },
+  "total_servers": 18,
+  "by_status": {
+    "active": 11,
+    "archived": 5,
+    "experimental": 1,
+    "deprecated": 1
+  },
+  "by_language": {
+    "typescript": 13,
+    "python": 5
+  },
+  "usage_patterns": {
+    "progressive_discovery": "Servers are organized for runtime discovery using MCP protocol",
+    "dynamic_tools": "Tools can be discovered and used dynamically without static configuration",
+    "categorization": "Servers grouped by maintenance status and source for easy navigation"
+  },
+  "integration_example": {
+    "description": "Example of discovering and using MCP servers dynamically",
+    "code": "const tools = await list_mcp_tools();\nconst toolDetails = await get_mcp_tool_details('tool_name');\nconst result = await callMCPTool('tool_name', params);"
+  }
+}
