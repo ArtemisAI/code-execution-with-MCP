@@ -144,6 +144,14 @@ mcp-code-exec-harness/
 │   │
 │   └── index.ts               # Main server entry point
 │
+├── servers/                   # MCP server collection (NEW!)
+│   ├── official/              # Official MCP servers
+│   ├── archived/              # Archived reference servers
+│   ├── community/             # Community-contributed servers
+│   ├── README.md              # Server collection documentation
+│   ├── catalog.json           # Structured server index
+│   └── QUICKSTART.md          # Quick start guide
+│
 ├── skills/                    # Persistent agent skills (user-specific)
 ├── workspace/                 # Ephemeral execution workspace
 ├── Dockerfile.sandbox         # Secure sandbox container
@@ -279,6 +287,35 @@ return { summary, totalSales: summary.total, count: summary.count };
 
 ## 🛠️ Extending the Template
 
+### MCP Servers Collection
+
+This repository includes a comprehensive collection of **18 MCP servers** organized for progressive discovery:
+
+- **📦 7 Official Servers** - Filesystem, Git, Memory, Fetch, Everything, Time, Sequential Thinking
+- **🗄️ 5 Archived Servers** - PostgreSQL, Redis, SQLite, Puppeteer, Sentry
+- **🌍 6 Community Servers** - MongoDB, GreptimeDB, Unstructured, Semgrep, MCP Installer, PostgreSQL Community Fork
+
+**Quick Start:**
+```bash
+# Browse the server collection
+cd servers/
+
+# Read the documentation
+cat README.md
+
+# Check the quick start guide
+cat QUICKSTART.md
+
+# View the structured catalog
+cat catalog.json
+```
+
+**Documentation:**
+- [`servers/README.md`](servers/README.md) - Complete server collection documentation
+- [`servers/QUICKSTART.md`](servers/QUICKSTART.md) - Quick start guide with common use cases
+- [`servers/catalog.json`](servers/catalog.json) - Structured server index for programmatic discovery
+- Category-specific READMEs in `servers/official/`, `servers/archived/`, and `servers/community/`
+
 ### Adding New MCP Servers
 
 ```typescript
@@ -302,6 +339,32 @@ async addServer(config: MCPServerConfig): Promise<void> {
   const tools = await client.listTools();
   tools.forEach(tool => this.registerTool(tool));
 }
+```
+
+**Example configurations for servers from the collection:**
+
+```typescript
+// Filesystem server (official)
+await this.addServer({
+  name: 'filesystem',
+  command: 'npx',
+  args: ['@modelcontextprotocol/server-filesystem', '/workspace', '/skills']
+});
+
+// MongoDB server (community)
+await this.addServer({
+  name: 'mongodb',
+  command: 'npx',
+  args: ['-y', 'mongodb-mcp-server', '--readOnly'],
+  env: { MDB_MCP_CONNECTION_STRING: process.env.MONGODB_URI }
+});
+
+// Git server (official)
+await this.addServer({
+  name: 'git',
+  command: 'npx',
+  args: ['mcp-server-git']
+});
 ```
 
 ### Custom PII Patterns

@@ -1,0 +1,131 @@
+[build-system]
+requires = [
+    "hatchling",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "semgrep-mcp"
+version = "0.9.0"
+description = "MCP Server for using Semgrep to scan code"
+readme = "README.md"
+changelog = "CHANGELOG.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Semgrep, Inc.", email = "hello@semgrep.com" },
+    { name = "Seth Jaksik", email = "seth@semgrep.com" },
+    { name = "Drew Dennison", email = "drew@semgrep.com" },
+]
+keywords = [
+    "security",
+    "static-analysis",
+    "code-scanning",
+    "semgrep",
+    "mcp",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = [
+    "mcp==1.12.2",
+    "semgrep==1.135.0",
+    "opentelemetry-api>=1.25.0",
+    "opentelemetry-sdk>=1.25.0",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/semgrep/mcp"
+Repository = "https://github.com/semgrep/mcp.git"
+Issues = "https://github.com/semgrep/mcp/issues"
+Documentation = "https://github.com/semgrep/mcp#readme"
+Changelog = "https://github.com/semgrep/mcp/blob/main/CHANGELOG.md"
+
+[project.scripts]
+semgrep-mcp = "semgrep_mcp.server:main"
+
+[tool.uv]
+dev-dependencies = [
+    "mcp[cli]>=1.11.0",
+    "ruff>=0.11.4",
+    "pytest>=8.1.1",
+    "pytest-asyncio>=0.23.0",
+    "pytest-env>=1.1.0",
+    "tomli>=2.0.1",
+    "tomli-w>=1.0.0",
+    "pre-commit>=3.0.0",
+    "pyright>=1.1.0",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+extend-exclude = [
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "B",
+    "I",
+    "UP",
+    "N",
+    "W",
+    "C90",
+    "RUF",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+    "semgrep_mcp",
+]
+combine-as-imports = true
+split-on-trailing-comma = true
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/semgrep_mcp",
+]
+
+[tool.pyright]
+exclude = [
+    "src/semgrep_mcp/semgrep_interfaces",
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+python_files = [
+    "test_*.py",
+]
+python_classes = [
+    "Test*",
+]
+python_functions = [
+    "test_*",
+]
+addopts = [
+    "-v",
+    "--tb=short",
+]
+
+[tool.pytest_env]
+SEMGREP_MCP_DISABLE_TRACING = "true"
